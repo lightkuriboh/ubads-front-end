@@ -35,7 +35,6 @@
           Twitter
         </a>
       </li>
-      <br/>
       <li>
         <a
           href="http://vuejs-templates.github.io/webpack/"
@@ -85,7 +84,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'HelloWorldd',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
