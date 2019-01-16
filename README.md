@@ -1,6 +1,6 @@
 # ubads-front-end
 
-## Loc - History, Mainpage, Profile
+## Loc - History, Main page, Profile
 
 ## Hieu - Authorization, Submit
 

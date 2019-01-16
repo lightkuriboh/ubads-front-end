@@ -1,15 +1,32 @@
 <template>
   <div id="app">
     <el-button type="primary">
+      <router-link to="/">Home</router-link>
+    </el-button>
+    <el-button type="primary">
       <router-link to="/login">Login</router-link>
     </el-button>
+    <Logout v-if="isLoggedIn"/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import Logout from './components/authorization/Logout'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Logout
+  },
+  data () {
+    return {
+    }
+  },
+  computed: {
+    isLoggedIn: function () {
+      return this.$store.getters.isLoggedIn
+    }
+  }
 }
 </script>
 

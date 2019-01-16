@@ -14,7 +14,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">Login</el-button>
+          <el-button type="primary" @click="login">Login</el-button>
           <el-button type="danger">Register</el-button>
         </el-form-item>
       </el-form>
@@ -41,6 +41,19 @@ export default {
           {min: 6, max: 15, messsage: 'Password\'s length should be 6 to 15', trigger: 'blur'}
         ]
       }
+    }
+  },
+  methods: {
+    login: function () {
+      let un = this.data.loginForm.username
+      let pw = this.data.loginForm.password
+      this.$store.dispatch('login', {un, pw})
+        .then(
+          () => this.$router.push('/')
+        )
+        .catch(
+          err => console.log(err)
+        )
     }
   }
 }
