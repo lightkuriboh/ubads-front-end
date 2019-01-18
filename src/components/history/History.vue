@@ -109,6 +109,7 @@ export default {
   },
   created () {
     this.numberOfRows = this.historyData.length
+    this.historyData = this.historyData.reverse()
   },
   computed: {
     filterMyFights: function () {
@@ -149,10 +150,10 @@ export default {
       }
     },
     getLogLink: function (row) {
-      return '/log?id=' + row.id
+      return '/log/' + row.id
     },
     getViewLink: function (row) {
-      return '/view?id=' + row.id
+      return '/view/' + row.id
     },
     clickLog: function (row) {
       window.open(this.getLogLink(row))
@@ -170,15 +171,19 @@ export default {
   margin: 0 auto;
 }
 .el-table .success-row {
-  background-color: #f4ffef;
+  /*background-color: #f4ffef;*/
+  color: #3da517;
 }
 .el-table .warning-row {
-  background-color: #fffbef;
+  /*background-color: #fffbef;*/
+  color: #d66520;
 }
 .el-table .danger-row {
-  background-color: #ffefef;
+  /*background-color: #ffefef;*/
+  color: #d62020;
 }
 .el-table .info-row {
-  background-color: #faefff;
+  /*background-color: #faefff;*/
+  color: #8420d6;
 }
 </style>

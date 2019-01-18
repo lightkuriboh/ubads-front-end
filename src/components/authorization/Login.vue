@@ -5,17 +5,17 @@
       <el-form :model="loginForm" :rules="rules" class="login-form">
         <el-form-item prop="username">
           <el-input placeholder="Username" v-model="loginForm.username">
-            <template slot="prepend">Username:</template>
+            <template slot="prepend">Username</template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input placeholder="Password" v-model="loginForm.password">
-            <template slot="prepend">Password:</template>
+            <template slot="prepend">Password</template>
           </el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="login">Login</el-button>
-          <el-button type="danger">Register</el-button>
+          <router-link to="/register"><el-button type="danger">Register</el-button></router-link>
         </el-form-item>
       </el-form>
     </el-card>
@@ -44,10 +44,25 @@ export default {
     }
   },
   methods: {
+    notifySuccess: function (title, message) {
+      this.$notify({
+        title: title,
+        message: message,
+        type: 'success'
+      })
+    },
+    notifyFailed: function (title, message) {
+      this.$notify.error({
+        title: title,
+        message: message
+      })
+    },
     login: function () {
-      let un = this.data.loginForm.username
-      let pw = this.data.loginForm.password
-      this.$store.dispatch('login', {un, pw})
+      let myData = {
+        username: this.loginForm.username,
+        password: this.loginForm.password
+      }
+      this.$store.dispatch('login', myData)
         .then(
           () => this.$router.push('/')
         )
@@ -61,7 +76,7 @@ export default {
 
 <style scoped>
 .login-form {
-  width: 75%
+  width: 85%
 }
 .box-card {
   width: 100%
