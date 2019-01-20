@@ -109,6 +109,8 @@ export default {
         this.notifyFailed('Failed', 'Enter some code!')
       } else {
         this.notifySuccess('Success', 'Submitted bot for the ' + this.chosenGame + ' game!')
+        this.notifySuccess('Let\'s Fight!', 'But wait a little for your Bot to be compiled!')
+        this.$router.push('/fight')
       }
     },
     gameChoose: function () {

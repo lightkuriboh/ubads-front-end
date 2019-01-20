@@ -1,8 +1,8 @@
 # ubads-front-end
 
-## Loc - History, Main page, Profile
+## Loc - Main page
 
-## Hieu - Authorization, Submit
+## Hieu - History, Authorization, Submit, Profile
 
 > A Vue.js project
 
