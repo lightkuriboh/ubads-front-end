@@ -8,29 +8,29 @@
     id="menu-style"
     :router="true"
   >
-    <el-menu-item index="/">
+    <el-menu-item index="/"><b>
       Home
-    </el-menu-item>
+    </b></el-menu-item>
     <el-submenu index="submenu-1">
-      <template slot="title">Submit</template>
-      <el-menu-item index="/submit">
+      <template slot="title"><b>Submit</b></template>
+      <el-menu-item index="/submit"><b>
         Submit bot
-      </el-menu-item>
-      <el-menu-item index="/fight">
+      </b></el-menu-item>
+      <el-menu-item index="/fight"><b>
         Fight
-      </el-menu-item>
+      </b></el-menu-item>
     </el-submenu>
-    <el-menu-item index="/history">
+    <el-menu-item index="/history"><b>
       History
-    </el-menu-item>
+    </b></el-menu-item>
     <el-submenu v-if="!isLoggedIn" index="submenu-2">
-      <template slot="title">Auth</template>
-      <el-menu-item index="/login">
+      <template slot="title"><b>Auth</b></template>
+      <el-menu-item index="/login"><b>
         Login
-      </el-menu-item>
-      <el-menu-item index="/register">
+      </b></el-menu-item>
+      <el-menu-item index="/register"><b>
         Register
-      </el-menu-item>
+      </b></el-menu-item>
     </el-submenu>
     <el-menu-item v-if="isLoggedIn">
       <Logout/>

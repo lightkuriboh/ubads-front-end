@@ -1,21 +1,30 @@
 <template>
   <div class="login-panel">
     <el-card class="box-card">
-      <div slot="header"><b>LOGIN</b></div>
+      <div slot="header"><b>
+        LOGIN
+      </b></div>
       <el-form :model="loginForm" :rules="rules" class="login-form">
         <el-form-item prop="username">
           <el-input placeholder="Username" v-model="loginForm.username">
-            <template slot="prepend">Username</template>
+            <template slot="prepend"><b>
+              Username
+            </b></template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input placeholder="Password" v-model="loginForm.password">
-            <template slot="prepend">Password</template>
+            <template slot="prepend"><b>Password
+            </b></template>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="login">Login</el-button>
-          <router-link to="/register"><el-button type="danger">Register</el-button></router-link>
+          <el-button type="primary" @click="login"><b>
+            Login
+          </b></el-button>
+          <router-link to="/register"><el-button type="danger"><b>
+            Register
+          </b></el-button></router-link>
         </el-form-item>
       </el-form>
     </el-card>

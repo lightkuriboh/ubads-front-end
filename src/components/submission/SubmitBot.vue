@@ -1,6 +1,8 @@
 <template>
   <el-card class="main-div">
-    <div slot="header"><b>Submit Your Bot Here</b></div>
+    <div slot="header"><b>
+      Submit Your Bot Here
+    </b></div>
     <div class="right-div">
       <el-select v-model="chosenGame" placeholder="Choose Game" @change="gameChoose">
         <el-option
@@ -9,16 +11,24 @@
           :value="gameName"
         ></el-option>
       </el-select>
-      <el-button plain type="success" @click="submit">Submit</el-button>
+      <el-button plain type="success" @click="submit"><b>
+        Submit
+      </b></el-button>
       <el-card style="margin-top: 20px">
         <el-table
           :data="submitHistory"
           height="300"
+          border
         >
           <el-table-column
             label="ID"
-            prop="id"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              <el-button plain size="small" @click="showCode(scope.row)">
+                {{scope.row.id}}
+              </el-button>
+            </template>
+          </el-table-column>
           <el-table-column
             label="BestRating"
             prop="bestRating"
@@ -115,6 +125,12 @@ export default {
     },
     gameChoose: function () {
       this.notifySuccess('Game chosen successfully!', 'Game chosen: ' + this.chosenGame)
+    },
+    getCodeLink: function (row) {
+      return '/code/' + row.id
+    },
+    showCode: function (row) {
+      window.open(this.getCodeLink(row))
     }
   }
 }

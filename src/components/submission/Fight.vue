@@ -15,7 +15,9 @@
           :value="gameName"
         ></el-option>
       </el-select>
-      <el-button type="danger" plain @click="letsFight">Fight!</el-button>
+      <el-button type="danger" plain @click="letsFight"><b>
+        Fight!
+      </b></el-button>
       <el-input placeholder="Choose your enemy" disabled v-model="enemy" style="margin-top: 20px"></el-input>
     </el-card>
     <el-card class="left-div">

@@ -3,8 +3,12 @@
     <el-card class="history-card">
       <div slot="header"><b>History</b></div>
       <div style="margin-bottom: 20px">
-        <el-radio v-model="filterOptions.isFiltered" label="1">My Fights</el-radio>
-        <el-radio v-model="filterOptions.isFiltered" label="2">All Fights</el-radio>
+        <el-radio v-model="filterOptions.isFiltered" label="1"><b>
+          My Fights
+        </b></el-radio>
+        <el-radio v-model="filterOptions.isFiltered" label="2"><b>
+          All Fights
+        </b></el-radio>
         <el-select
           v-model="filterOptions.game"
           placeholder="Filter as a game"

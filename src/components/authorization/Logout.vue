@@ -1,5 +1,7 @@
 <template>
-  <el-button type="danger" @click="logout">Logout</el-button>
+  <el-button type="danger" @click="logout"><b>
+    Logout
+  </b></el-button>
 </template>
 
 <script>

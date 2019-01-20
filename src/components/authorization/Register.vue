@@ -1,21 +1,29 @@
 <template>
   <div class="register-panel">
     <el-card class="box-card">
-      <div slot="header"><b>REGISTER</b></div>
+      <div slot="header"><b>
+        REGISTER
+      </b></div>
       <el-form :model="registerForm" :rules="rules" class="register-form">
         <el-form-item prop="username">
           <el-input placeholder="Username" v-model="registerForm.username">
-            <template slot="prepend">Username</template>
+            <template slot="prepend"><b>
+              Username
+            </b></template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input placeholder="Password" v-model="registerForm.password">
-            <template slot="prepend">Password</template>
+            <template slot="prepend"><b>
+              Password
+            </b></template>
           </el-input>
         </el-form-item>
         <el-form-item prop="email">
           <el-input placeholder="Email" v-model="registerForm.email">
-            <template slot="prepend">Email</template>
+            <template slot="prepend"><b>
+              Email
+            </b></template>
           </el-input>
         </el-form-item>
         <el-form-item>
@@ -45,22 +53,32 @@
         </el-form-item>
         <el-form-item prop="identity">
           <el-input placeholder="Your Identity" v-model="registerForm.identity">
-            <template slot="prepend">MSSV</template>
+            <template slot="prepend"><b>
+              MSSV
+            </b></template>
           </el-input>
         </el-form-item>
         <el-form-item prop="gen">
           <el-input placeholder="Your Generation" v-model="registerForm.generation">
-            <template slot="prepend">Generation</template>
+            <template slot="prepend"><b>
+              Generation
+            </b></template>
           </el-input>
         </el-form-item>
         <el-form-item prop="class">
           <el-input placeholder="Your Class" v-model="registerForm.class">
-            <template slot="prepend">Class</template>
+            <template slot="prepend"><b>
+              Class
+            </b></template>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="danger" @click="register">Register</el-button>
-          <router-link to="/login"><el-button type="primary">Login</el-button></router-link>
+          <el-button type="danger" @click="register"><b>
+            Register
+          </b></el-button>
+          <router-link to="/login"><el-button type="primary"><b>
+            Login
+          </b></el-button></router-link>
         </el-form-item>
       </el-form>
     </el-card>
