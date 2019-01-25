@@ -4,7 +4,7 @@
       <div slot="header"><b>
         REGISTER
       </b></div>
-      <el-form :model="registerForm" :rules="rules" class="register-form">
+      <el-form :model="registerForm" :rules="rules" ref="registerForm" class="register-form">
         <el-form-item prop="username">
           <el-input placeholder="Username" v-model="registerForm.username">
             <template slot="prepend"><b>
@@ -87,7 +87,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="danger" @click="register"><b>
+          <el-button type="danger" @click="register('registerForm')"><b>
             Register
           </b></el-button>
           <router-link to="/login"><el-button type="primary"><b>
@@ -174,8 +174,7 @@ export default {
             ],
             identity: [
               {required: true, message: 'Please input your identity!', trigger: 'blur'},
-              {min: 8, max: 16, message: 'Identity\'s length should be 8 to 16', trigger: 'blur'},
-              {type: 'number', message: 'Your identity must be a number'}
+              {min: 8, max: 16, message: 'Identity\'s length should be 8 to 16', trigger: 'blur'}
             ],
             class: [
               {required: true, message: 'Please enter your class!', trigger: 'blur'}
@@ -202,29 +201,42 @@ export default {
         message: message
       })
     },
-    register: function () {
-      let myData = {
-        username: this.registerForm.username,
-        password: this.registerForm.password,
-        metadata: {
-          email: this.registerForm.metadata.email,
-          birthday: this.registerForm.metadata.birthday,
-          name: this.registerForm.metadata.name,
-          education: {
-            school: this.registerForm.metadata.education.school,
-            identity: this.registerForm.metadata.education.identity,
-            class: this.registerForm.metadata.education.class,
-            generation: this.registerForm.metadata.education.generation
+    register: function (formName) {
+      let passReference = false
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+          passReference = true
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+      if (passReference) {
+        let myData = {
+          username: this.registerForm.username,
+          password: this.registerForm.password,
+          metadata: {
+            email: this.registerForm.metadata.email,
+            birthday: this.registerForm.metadata.birthday,
+            name: this.registerForm.metadata.name,
+            education: {
+              school: this.registerForm.metadata.education.school,
+              identity: this.registerForm.metadata.education.identity,
+              class: this.registerForm.metadata.education.class,
+              generation: this.registerForm.metadata.education.generation
+            }
           }
         }
+        alert(myData)
+        this.$store.dispatch('register', myData)
+          .then(
+            () => this.$router.push('/login')
+          )
+          .catch(
+            err => console.log(err)
+          )
       }
-      this.$store.dispatch('register', myData)
-        .then(
-          () => this.$router.push('/login')
-        )
-        .catch(
-          err => console.log(err)
-        )
     }
   }
 }
