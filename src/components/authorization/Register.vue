@@ -19,27 +19,41 @@
             </b></template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="email">
-          <el-input placeholder="Email" v-model="registerForm.email">
+        <el-form-item prop="confirm.password">
+          <el-input placeholder="Password" v-model="registerForm.confirm.password">
+            <template slot="prepend"><b>
+              Re.Password
+            </b></template>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="metadata.email">
+          <el-input placeholder="Email" v-model="registerForm.metadata.email">
             <template slot="prepend"><b>
               Email
             </b></template>
           </el-input>
         </el-form-item>
+        <el-form-item prop="metadata.name">
+          <el-input placeholder="Real name" v-model="registerForm.metadata.name">
+            <template slot="prepend"><b>
+              Name
+            </b></template>
+          </el-input>
+        </el-form-item>
         <el-form-item>
           <el-col :span="10">
-            <el-form-item prop="birthday">
+            <el-form-item prop="metadata.birthday">
               <el-date-picker
                 placeholder="BirthDay"
-                v-model="registerForm.birthday"
+                v-model="registerForm.metadata.birthday"
                 type="date"
               >
               </el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item prop="school">
-              <el-select v-model="registerForm.school" placeholder="Your School">
+            <el-form-item prop="metadata.education.school">
+              <el-select v-model="registerForm.metadata.education.school" placeholder="Your School">
                 <el-option
                   v-for="school in schools"
                   :key="school.code"
@@ -51,22 +65,22 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item prop="identity">
-          <el-input placeholder="Your Identity" v-model="registerForm.identity">
+        <el-form-item prop="metadata.education.identity">
+          <el-input placeholder="Your Identity" v-model="registerForm.metadata.education.identity">
             <template slot="prepend"><b>
               MSSV
             </b></template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="gen">
-          <el-input placeholder="Your Generation" v-model="registerForm.generation">
+        <el-form-item prop="metadata.education.generation">
+          <el-input placeholder="Your Generation" v-model="registerForm.metadata.education.generation">
             <template slot="prepend"><b>
               Generation
             </b></template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="class">
-          <el-input placeholder="Your Class" v-model="registerForm.class">
+        <el-form-item prop="metadata.education.class">
+          <el-input placeholder="Your Class" v-model="registerForm.metadata.education.class">
             <template slot="prepend"><b>
               Class
             </b></template>
@@ -89,6 +103,17 @@
 export default {
   name: 'Register',
   data () {
+    let checkPassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Enter the password again!'))
+      } else {
+        if (this.registerForm.confirm.password !== this.registerForm.password) {
+          callback(new Error('Two passwords must be same!'))
+        } else {
+          callback()
+        }
+      }
+    }
     return {
       schools: [
         {
@@ -103,38 +128,63 @@ export default {
       registerForm: {
         username: '',
         password: '',
-        email: '',
-        birthday: '',
-        school: '',
-        identity: '',
-        class: '',
-        generation: ''
+        confirm: {
+          password: ''
+        },
+        metadata: {
+          email: '',
+          birthday: '',
+          name: '',
+          education: {
+            school: '',
+            identity: '',
+            class: '',
+            generation: ''
+          }
+        }
       },
       rules: {
+        confirm: {
+          password: [
+            {validator: checkPassword, trigger: 'blur'}
+          ]
+        },
         username: [
-          {required: true, message: 'Please input your username!', trigger: 'blur'},
+          {required: true, message: 'Please enter your username!', trigger: 'blur'},
           {min: 6, max: 15, messsage: 'Username\'s length should be 6 to 15', trigger: 'blur'}
         ],
         password: [
-          {required: true, message: 'Please input your password!', trigger: 'blur'},
+          {required: true, message: 'Please enter your password!', trigger: 'blur'},
           {min: 6, max: 15, messsage: 'Password\'s length should be 6 to 15', trigger: 'blur'}
         ],
-        email: [
-          {required: true, message: 'Please input your email!', trigger: 'blur'}
-        ],
-        birthday: [
-          {required: true, message: 'Please choose your birthday!', trigger: 'blur'}
-        ],
-        identity: [
-          {required: true, message: 'Please input your identity!', trigger: 'blur'},
-          {min: 6, max: 15, messsage: 'Identity\'s length should be 6 to 15', trigger: 'blur'}
-        ],
-        class: [
-          {required: true, message: 'Please enter your class!', trigger: 'blur'}
-        ],
-        gen: [
-          {required: true, message: 'Please enter for generation!', trigger: 'blur'}
-        ]
+        metadata: {
+          email: [
+            {required: true, message: 'Please enter your email!', trigger: 'blur'},
+            {type: 'email', message: 'Pease enter a valid email'}
+          ],
+          birthday: [
+            {required: true, message: 'Please choose your birthday!', trigger: 'blur'}
+          ],
+          name: [
+            {required: true, message: 'Please enter your real name!', trigger: 'blur'}
+          ],
+          education: {
+            school: [
+              {required: true, message: 'Please choose your school!', trigger: 'blur'}
+            ],
+            identity: [
+              {required: true, message: 'Please input your identity!', trigger: 'blur'},
+              {min: 8, max: 16, message: 'Identity\'s length should be 8 to 16', trigger: 'blur'},
+              {type: 'number', message: 'Your identity must be a number'}
+            ],
+            class: [
+              {required: true, message: 'Please enter your class!', trigger: 'blur'}
+            ],
+            generation: [
+              {required: true, message: 'Please enter your generation!', trigger: 'blur'}
+            ]
+          }
+        }
       }
     }
   },
@@ -156,12 +206,17 @@ export default {
       let myData = {
         username: this.registerForm.username,
         password: this.registerForm.password,
-        email: this.registerForm.email,
-        birthday: this.registerForm.birthday,
-        school: this.registerForm.school,
-        identity: this.registerForm.identity,
-        class: this.registerForm.class,
-        generation: this.registerForm.generation
+        metadata: {
+          email: this.registerForm.metadata.email,
+          birthday: this.registerForm.metadata.birthday,
+          name: this.registerForm.metadata.name,
+          education: {
+            school: this.registerForm.metadata.education.school,
+            identity: this.registerForm.metadata.education.identity,
+            class: this.registerForm.metadata.education.class,
+            generation: this.registerForm.metadata.education.generation
+          }
+        }
       }
       this.$store.dispatch('register', myData)
         .then(
