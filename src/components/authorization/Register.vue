@@ -231,7 +231,10 @@ export default {
         alert(myData)
         this.$store.dispatch('register', myData)
           .then(
-            () => this.$router.push('/login')
+            () => {
+              this.notifySuccess('Info', this.$store.getters.authStatus)
+              this.$router.push('/login')
+            }
           )
           .catch(
             err => console.log(err)

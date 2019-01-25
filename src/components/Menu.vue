@@ -32,7 +32,7 @@
         Register
       </b></el-menu-item>
     </el-submenu>
-    <el-menu-item v-if="isLoggedIn">
+    <el-menu-item index = '/login' v-if="isLoggedIn">
       <Logout/>
     </el-menu-item>
   </el-menu>

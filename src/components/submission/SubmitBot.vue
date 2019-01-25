@@ -41,7 +41,7 @@
       </el-card>
     </div>
     <el-card class="left-div">
-      <editor v-model="content" width="100%" height="400"></editor>
+      <editor v-model="content" @init="editorInit" lang="html" theme="chrome" width="100%" height="400"></editor>
     </el-card>
   </el-card>
 </template>
@@ -49,6 +49,9 @@
 <script>
 export default {
   name: 'SubmitBot',
+  components: {
+    editor: require('vue2-ace-editor')
+  },
   data () {
     return {
       content: '',
@@ -94,10 +97,15 @@ export default {
   created () {
     this.submitHistory = this.submitHistory.reverse()
   },
-  components: {
-    editor: require('vue2-ace-editor')
-  },
   methods: {
+    editorInit: function () {
+      require('brace/ext/language_tools')
+      require('brace/mode/html')
+      require('brace/mode/javascript')
+      require('brace/mode/less')
+      require('brace/theme/chrome')
+      require('brace/snippets/javascript')
+    },
     notifySuccess: function (title, message) {
       this.$notify({
         title: title,

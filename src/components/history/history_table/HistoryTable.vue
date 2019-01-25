@@ -67,13 +67,13 @@ export default {
   data () {
     return {
       currentPage: 1,
-      rowsEachPage: 10,
+      rowsEachPage: 7,
       numberOfRows: 0,
       historyData: [
         {
           id: '0',
           game: 'Bomber',
-          attacker: 'Kuriboh',
+          attacker: 'lightkuriboh',
           defender: 'Hekl0',
           result: 200,
           time: '21/01/1999'
@@ -97,7 +97,7 @@ export default {
         {
           id: '3',
           game: 'Bomber',
-          attacker: 'Kuriboh',
+          attacker: 'lightkuriboh',
           defender: 'ILoveBaoNgoc',
           result: '!Bot error!',
           time: '06/09/1999'
@@ -105,7 +105,7 @@ export default {
         {
           id: '4',
           game: 'Racing',
-          attacker: 'Kuriboh',
+          attacker: 'lightkuriboh',
           defender: 'ILoveBaoNgoc',
           result: 312,
           time: '06/09/1999'
@@ -120,14 +120,15 @@ export default {
   computed: {
     filterMyFights: function () {
       let finalData = this.historyData
+      let that = this
       if (this.filter.isFiltered === '1') {
         finalData = finalData.filter(function (item) {
-          let myName = 'Kuriboh'
+          let myName = that.$store.getters.getUsername
+          // console.log(myName)
           return item.attacker === myName || item.defender === myName
         })
       }
       if (this.filter.game.length > 0) {
-        let that = this
         finalData = finalData.filter(function (item) {
           let myGame = that.filter.game
           return item.game === myGame
@@ -141,6 +142,7 @@ export default {
   methods: {
     pageChange: function (pageNumger) {
       this.currentPage = pageNumger
+      // console.log(this.$store.getters.getUsername)
     },
     tableRowClassName: function ({row}) {
       if (typeof row.result === 'string') {

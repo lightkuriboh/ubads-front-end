@@ -1,5 +1,5 @@
 <template>
-  <el-button type="danger" @click="logout"><b>
+  <el-button size="small" plain type="default" @click="logout"><b>
     Logout
   </b></el-button>
 </template>

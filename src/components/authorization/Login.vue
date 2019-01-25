@@ -73,7 +73,10 @@ export default {
       }
       this.$store.dispatch('login', myData)
         .then(
-          () => this.$router.push('/')
+          () => {
+            this.notifySuccess('Success', this.$store.getters.authStatus)
+            this.$router.push('/')
+          }
         )
         .catch(
           err => console.log(err)
