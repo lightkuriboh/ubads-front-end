@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import Axios from 'axios'
+
 export default {
   name: 'SubmitBot',
   components: {
@@ -56,8 +58,6 @@ export default {
     return {
       content: '',
       games: [
-        'Bomber',
-        'Racing'
       ],
       chosenGame: '',
       submitHistory: [
@@ -96,6 +96,21 @@ export default {
   },
   created () {
     this.submitHistory = this.submitHistory.reverse()
+    Axios({
+      url: 'http://localhost:3000/game', data: {}, method: 'GET'
+    })
+      .then((resp) => {
+        let str = JSON.stringify(resp.data)
+        let gameList = JSON.parse(str)
+        for (let i = 0; i < gameList.length; i++) {
+          let value = gameList[i]
+          this.games.push(value.name)
+        }
+      })
+      .catch((err) => {
+        this.notifyFailed('Failed', 'There is some errors!')
+        console.log(err)
+      })
   },
   methods: {
     editorInit: function () {
