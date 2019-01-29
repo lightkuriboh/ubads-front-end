@@ -4,7 +4,7 @@
       <div slot="header"><b>
         LOGIN
       </b></div>
-      <el-form :model="loginForm" :rules="rules" class="login-form">
+      <el-form :model="loginForm" :rules="rules" class="login-form" ref="loginForm">
         <el-form-item prop="username">
           <el-input placeholder="Username" v-model="loginForm.username">
             <template slot="prepend"><b>
@@ -19,7 +19,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="login"><b>
+          <el-button type="primary" @click="login('loginForm')"><b>
             Login
           </b></el-button>
           <router-link to="/register"><el-button type="danger"><b>
@@ -66,21 +66,36 @@ export default {
         message: message
       })
     },
-    login: function () {
-      let myData = {
-        username: this.loginForm.username,
-        password: this.loginForm.password
+    login: function (formName) {
+      let passReference = false
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // alert('submit!')
+          passReference = true
+        } else {
+          // console.log('error submit!!')
+          return false
+        }
+      })
+      if (passReference) {
+        let myData = {
+          username: this.loginForm.username,
+          password: this.loginForm.password
+        }
+        this.$store.dispatch('login', myData)
+          .then(
+            (result) => {
+              this.notifySuccess('Success', this.$store.getters.authStatus)
+              this.$router.push('/')
+            }
+          )
+          .catch((err) => {
+            this.notifyFailed('Failed', this.$store.getters.authStatus)
+            console.log(err)
+          })
+      } else {
+        this.notifyFailed('Failed', 'Pealse input enough required information')
       }
-      this.$store.dispatch('login', myData)
-        .then(
-          () => {
-            this.notifySuccess('Success', this.$store.getters.authStatus)
-            this.$router.push('/')
-          }
-        )
-        .catch(
-          err => console.log(err)
-        )
     }
   }
 }
