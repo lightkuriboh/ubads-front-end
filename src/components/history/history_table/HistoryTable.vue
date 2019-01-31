@@ -67,7 +67,7 @@ export default {
   data () {
     return {
       currentPage: 1,
-      rowsEachPage: 7,
+      rowsEachPage: 5,
       numberOfRows: 0,
       historyData: [
         {
@@ -174,6 +174,21 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  .el-table .success-row {
+    /*background-color: #f4ffef;*/
+    color: #3da517;
+  }
+  .el-table .warning-row {
+    /*background-color: #fffbef;*/
+    color: #d66520;
+  }
+  .el-table .danger-row {
+    /*background-color: #ffefef;*/
+    color: #d62020;
+  }
+  .el-table .info-row {
+    /*background-color: #faefff;*/
+    color: #8420d6;
+  }
 </style>

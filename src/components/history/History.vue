@@ -52,25 +52,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .history-card {
   width: 85%;
   margin: 0 auto;
-}
-.el-table .success-row {
-  /*background-color: #f4ffef;*/
-  color: #3da517;
-}
-.el-table .warning-row {
-  /*background-color: #fffbef;*/
-  color: #d66520;
-}
-.el-table .danger-row {
-  /*background-color: #ffefef;*/
-  color: #d62020;
-}
-.el-table .info-row {
-  /*background-color: #faefff;*/
-  color: #8420d6;
 }
 </style>

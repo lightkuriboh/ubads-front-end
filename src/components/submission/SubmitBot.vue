@@ -4,11 +4,19 @@
       Submit Your Bot Here
     </b></div>
     <div class="right-div">
-      <el-select v-model="chosenGame" placeholder="Choose Game" @change="gameChoose">
+      <el-select v-model="chosenGame" placeholder="Choose Game" @change="gameChoose" style="margin: 10px">
         <el-option
           v-for="gameName in games"
           :key="gameName"
           :value="gameName"
+        ></el-option>
+      </el-select>
+      <el-select v-model="chosenLanguage" placeholder="Choose A Language" @change="langChoose" style="margin: 10px">
+        <el-option
+          v-for="lang in languages"
+          :key="lang.code"
+          :value="lang.code"
+          :label="lang.name"
         ></el-option>
       </el-select>
       <el-button plain type="success" @click="submit"><b>
@@ -58,8 +66,16 @@ export default {
     return {
       content: '',
       games: [
+        'Bomber'
+      ],
+      languages: [
+        {
+          code: 'cpp',
+          name: 'C++'
+        }
       ],
       chosenGame: '',
+      chosenLanguage: '',
       submitHistory: [
         {
           id: '0',
@@ -96,6 +112,8 @@ export default {
   },
   created () {
     this.submitHistory = this.submitHistory.reverse()
+    this.games = []
+    this.languages = []
     Axios({
       url: 'http://localhost:3000/game', data: {}, method: 'GET'
     })
@@ -105,6 +123,29 @@ export default {
         for (let i = 0; i < gameList.length; i++) {
           let value = gameList[i]
           this.games.push(value.name)
+        }
+      })
+      .catch((err) => {
+        this.notifyFailed('Failed', 'There is some errors!')
+        console.log(err)
+      })
+    Axios({
+      url: 'http://localhost:3000/lang', data: {}, method: 'GET'
+    })
+      .then((resp) => {
+        let str = JSON.stringify(resp.data)
+        let tmpStr = ''
+        for (let i = 0; i < str.length; i++) {
+          if (str[i] !== '\\') {
+            tmpStr += str[i]
+          }
+        }
+        str = tmpStr
+        str = str.substring(1, str.length - 1)
+        let langList = JSON.parse(str)
+        for (let i = 0; i < langList.length; i++) {
+          let langListElement = langList[i]
+          this.languages.push(langListElement)
         }
       })
       .catch((err) => {
@@ -140,6 +181,9 @@ export default {
       } else
       if (this.content.length === 0) {
         this.notifyFailed('Failed', 'Enter some code!')
+      } else
+      if (this.chosenLanguage.length === 0) {
+        this.notifyFailed('Failed', 'Choose a language!')
       } else {
         this.notifySuccess('Success', 'Submitted bot for the ' + this.chosenGame + ' game!')
         this.notifySuccess('Let\'s Fight!', 'But wait a little for your Bot to be compiled!')
@@ -148,6 +192,9 @@ export default {
     },
     gameChoose: function () {
       this.notifySuccess('Game chosen successfully!', 'Game chosen: ' + this.chosenGame)
+    },
+    langChoose: function () {
+      this.notifySuccess('Language chosen successfully!', 'Language chosen: ' + this.chosenLanguage)
     },
     getCodeLink: function (row) {
       return '/code/' + row.id
