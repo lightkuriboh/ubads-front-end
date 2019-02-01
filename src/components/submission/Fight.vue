@@ -70,7 +70,7 @@ export default {
       enemy: '',
       opponents: [
         {
-          username: 'ILoveBaoNgoc',
+          username: 'ilovebaongoc',
           school: 'UET',
           generation: 'K62',
           class: 'CAC',
@@ -78,7 +78,7 @@ export default {
           rating: '312'
         },
         {
-          username: 'Kuriboh',
+          username: 'lightkuriboh',
           school: 'UET',
           generation: 'K62',
           class: 'CAC',
@@ -86,7 +86,7 @@ export default {
           rating: '3145'
         },
         {
-          username: 'Hekl0',
+          username: 'hekl0',
           school: 'Harvard',
           generation: 'K55',
           class: 'WorstClass',
@@ -110,7 +110,7 @@ export default {
         }
       })
       .catch((err) => {
-        this.notifyFailed('Failed', 'There is some errors!')
+        this.notifyFailed('Failed', 'Network errors!')
         console.log(err)
       })
   },
@@ -141,7 +141,13 @@ export default {
       if (this.enemy.length === 0) {
         this.notifyFailed('Failed', 'Choose a enemy!')
       } else {
-        this.notifySuccess('Success', 'Attacked ' + this.enemy + ' in the ' + this.chosenGame + ' game!')
+        if (this.$store.getters.isLoggedIn) {
+          this.notifySuccess('Success', 'Attacked ' + this.enemy + ' in the ' + this.chosenGame + ' game!')
+          this.$router.push('/history')
+        } else {
+          this.notifyFailed('Failed', 'You haven\'t logged in!')
+          this.$router.push('/login')
+        }
       }
     }
   }

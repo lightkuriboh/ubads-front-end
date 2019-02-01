@@ -52,6 +52,12 @@ export default {
       }
     }
   },
+  created () {
+    if (this.$store.getters.isLoggedIn) {
+      this.$router.push('/')
+      this.notifySuccess('Success', 'You logged in already!')
+    }
+  },
   methods: {
     notifySuccess: function (title, message) {
       this.$notify({

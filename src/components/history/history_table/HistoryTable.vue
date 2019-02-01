@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import Axios from 'axios'
 export default {
   name: 'HistoryTable',
   props: [
@@ -114,8 +115,24 @@ export default {
     }
   },
   created () {
-    this.numberOfRows = this.historyData.length
-    this.historyData = this.historyData.reverse()
+    this.historyData = []
+    Axios({url: 'http://localhost:3000/record', data: {}, method: 'GET'})
+      .then((resp) => {
+        let strData = JSON.stringify(resp.data)
+        let tableData = JSON.parse(strData)
+        for (let i = 0; i < tableData.length; i++) {
+          this.historyData.push(tableData[i])
+          if (typeof tableData !== 'object') {
+            this.historyData[this.historyData.length - 1].result = tableData[i].result.got.toString() + tableData[i].result.maximum.toString()
+          }
+        }
+        this.numberOfRows = this.historyData.length
+        this.historyData = this.historyData.reverse()
+      })
+      .catch((err) => {
+        this.notifyFailed('Error', 'Network error!')
+        console.log(err)
+      })
   },
   computed: {
     filterMyFights: function () {
@@ -124,7 +141,6 @@ export default {
       if (this.filter.isFiltered === '1') {
         finalData = finalData.filter(function (item) {
           let myName = that.$store.getters.getUsername
-          // console.log(myName)
           return item.attacker === myName || item.defender === myName
         })
       }
@@ -140,12 +156,28 @@ export default {
     }
   },
   methods: {
+    isNumber: function (n) {
+      return /^-?[\d.]+(?:e-?\d+)?$/.test(n)
+    },
+    notifySuccess: function (title, message) {
+      this.$notify({
+        title: title,
+        message: message,
+        type: 'success'
+      })
+    },
+    notifyFailed: function (title, message) {
+      this.$notify.error({
+        title: title,
+        message: message
+      })
+    },
     pageChange: function (pageNumger) {
       this.currentPage = pageNumger
       // console.log(this.$store.getters.getUsername)
     },
     tableRowClassName: function ({row}) {
-      if (typeof row.result === 'string') {
+      if (!(this.isNumber(row.result))) {
         if (row.result.length > 0 && row.result[0] === '!') {
           return 'warning-row'
         }

@@ -126,7 +126,7 @@ export default {
         }
       })
       .catch((err) => {
-        this.notifyFailed('Failed', 'There is some errors!')
+        this.notifyFailed('Failed', 'Network errors!')
         console.log(err)
       })
     Axios({
@@ -149,9 +149,30 @@ export default {
         }
       })
       .catch((err) => {
-        this.notifyFailed('Failed', 'There is some errors!')
+        this.notifyFailed('Failed', 'Network errors!')
         console.log(err)
       })
+    this.submitHistory = []
+    if (this.$store.getters.isLoggedIn) {
+      Axios({
+        url: 'http://localhost:3000/submission/mine', data: {username: this.$store.getters.getUsername}, method: 'POST'
+      })
+        .then((resp) => {
+          let str = JSON.stringify(resp.data)
+          let histories = JSON.parse(str)
+          for (let i = 0; i < histories.length; i++) {
+            this.submitHistory.push({
+              id: histories[i].id,
+              bestRating: histories[i].best_rating,
+              bestScore: histories[i].best_score
+            })
+          }
+        })
+        .catch((err) => {
+          this.notifyFailed('Failed', 'Network errors!')
+          console.log(err)
+        })
+    }
   },
   methods: {
     editorInit: function () {
@@ -185,9 +206,14 @@ export default {
       if (this.chosenLanguage.length === 0) {
         this.notifyFailed('Failed', 'Choose a language!')
       } else {
-        this.notifySuccess('Success', 'Submitted bot for the ' + this.chosenGame + ' game!')
-        this.notifySuccess('Let\'s Fight!', 'But wait a little for your Bot to be compiled!')
-        this.$router.push('/fight')
+        if (this.$store.getters.isLoggedIn) {
+          this.notifySuccess('Success', 'Submitted bot for the ' + this.chosenGame + ' game!')
+          this.notifySuccess('Let\'s Fight!', 'But wait a little for your Bot to be compiled!')
+          this.$router.push('/fight')
+        } else {
+          this.notifyFailed('Failed', 'Login first!')
+          this.$router.push('/login')
+        }
       }
     },
     gameChoose: function () {

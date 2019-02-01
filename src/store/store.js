@@ -47,7 +47,11 @@ export const store = new Vuex.Store({
             resolve(resp)
           })
           .catch(err => {
-            commit('auth_error', err.response.data.message)
+            if (err.response) {
+              commit('auth_error', err.response.data.message)
+            } else {
+              commit('auth_error', 'Network error!')
+            }
             localStorage.removeItem('token')
             reject(err)
           })
@@ -72,7 +76,11 @@ export const store = new Vuex.Store({
             resolve(resp)
           })
           .catch(err => {
-            commit('auth_error', err.response.data.message)
+            if (err.response) {
+              commit('auth_error', err.response.data.message)
+            } else {
+              commit('auth_error', 'Network error!')
+            }
             localStorage.removeItem('token')
             reject(err)
           })
