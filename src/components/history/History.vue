@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import Axios from 'axios'
 import HistoryTable from './history_table/HistoryTable'
 export default {
   name: 'History',
@@ -47,7 +48,23 @@ export default {
     }
   },
   created () {
-    this.games.splice(0, 0, '')
+    this.games = []
+    Axios({
+      url: 'http://localhost:3000/game', data: {}, method: 'GET'
+    })
+      .then((resp) => {
+        let str = JSON.stringify(resp.data)
+        let gameList = JSON.parse(str)
+        for (let i = 0; i < gameList.length; i++) {
+          let value = gameList[i]
+          this.games.push(value.name)
+        }
+        this.games.splice(0, 0, '')
+      })
+      .catch((err) => {
+        this.notifyFailed('Failed', 'Network errors!')
+        console.log(err)
+      })
   }
 }
 </script>
