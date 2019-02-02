@@ -30,8 +30,8 @@
         style="color: #111214"
       >
         <el-table-column
-          prop="username"
-          label="Username"
+          prop="name"
+          label="name"
         ></el-table-column>
         <el-table-column
           prop="school"
@@ -71,6 +71,7 @@ export default {
       opponents: [
         {
           username: 'ilovebaongoc',
+          name: '',
           school: 'UET',
           generation: 'K62',
           class: 'CAC',
@@ -79,6 +80,7 @@ export default {
         },
         {
           username: 'lightkuriboh',
+          name: '',
           school: 'UET',
           generation: 'K62',
           class: 'CAC',
@@ -87,6 +89,7 @@ export default {
         },
         {
           username: 'hekl0',
+          name: '',
           school: 'Harvard',
           generation: 'K55',
           class: 'WorstClass',
@@ -97,6 +100,7 @@ export default {
     }
   },
   created () {
+    this.opponents = []
     let gameList = []
     Axios({
       url: 'http://localhost:3000/game', data: {}, method: 'GET'
@@ -130,6 +134,29 @@ export default {
     },
     gameChoose: function () {
       this.notifySuccess('Game chosen successfully!', 'Game chosen: ' + this.chosenGame)
+      this.opponents = []
+      Axios({
+        url: 'http://localhost:3000/achievement/game', data: {game: this.chosenGame}, method: 'POST'
+      })
+        .then((resp) => {
+          let str = JSON.stringify(resp.data)
+          let myOpponents = JSON.parse(str)
+          for (let i = 0; i < myOpponents.length; i++) {
+            this.opponents.push({
+              username: myOpponents[i].userDetails.username,
+              name: myOpponents[i].userDetails.metadata.name,
+              school: myOpponents[i].userDetails.metadata.education.school,
+              generation: myOpponents[i].userDetails.metadata.education.generation,
+              class: myOpponents[i].userDetails.metadata.education.class,
+              identity: myOpponents[i].userDetails.metadata.education.identity,
+              rating: myOpponents[i].resultDetails.rating
+            })
+          }
+        })
+        .catch((err) => {
+          this.notifyFailed('Failed', 'Network errors!')
+          console.log(err)
+        })
     },
     enemyChoose: function (row) {
       this.enemy = row.username

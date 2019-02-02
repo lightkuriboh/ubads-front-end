@@ -151,7 +151,7 @@ export default {
         },
         username: [
           {required: true, message: 'Please enter your username!', trigger: 'blur'},
-          {min: 6, max: 15, messsage: 'Username\'s length should be 6 to 15', trigger: 'blur'}
+          {min: 5, max: 15, messsage: 'Username\'s length should be 5 to 15', trigger: 'blur'}
         ],
         password: [
           {required: true, message: 'Please enter your password!', trigger: 'blur'},
