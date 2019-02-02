@@ -245,6 +245,8 @@ export default {
           .catch(
             err => console.log(err)
           )
+      } else {
+        this.notifyFailed('Failed', 'Pealse input enough required information')
       }
     }
   }
