@@ -33,7 +33,8 @@
           >
             <template slot-scope="scope">
               <el-button plain size="small" @click="showCode(scope.row)">
-                {{scope.row.id}}
+                <!--{{scope.row.id}}-->
+                ViewCode
               </el-button>
             </template>
           </el-table-column>

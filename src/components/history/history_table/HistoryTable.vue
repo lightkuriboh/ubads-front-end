@@ -122,6 +122,17 @@ export default {
         let tableData = JSON.parse(strData)
         for (let i = 0; i < tableData.length; i++) {
           this.historyData.push(tableData[i])
+          let miliSecond = parseInt(tableData[i].id.toString())
+          let myDate = new Date()
+          myDate.setTime(miliSecond - miliSecond % 1000)
+          let time = myDate.toString()
+          for (let j = 0; j < time.length; j++) {
+            if (time[j] === '(') {
+              time = time.substring(0, j - 2)
+              break
+            }
+          }
+          this.historyData[i].time = time
           if (typeof tableData !== 'object') {
             this.historyData[this.historyData.length - 1].result = tableData[i].result.got.toString() + tableData[i].result.maximum.toString()
           }
