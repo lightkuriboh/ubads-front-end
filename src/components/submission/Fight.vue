@@ -169,6 +169,22 @@ export default {
         this.notifyFailed('Failed', 'Choose a enemy!')
       } else {
         if (this.$store.getters.isLoggedIn) {
+          let myData = {
+            id: '',
+            game: this.chosenGame,
+            attacker: this.$store.getters.getUsername,
+            defender: this.enemy,
+            result: 'waiting...'
+          }
+          Axios({
+            url: 'http://localhost:3000/record/add', data: myData, method: 'POST'
+          })
+            .then((resp) => {
+            })
+            .catch((err) => {
+              this.notifyFailed('Failed', 'Network errors!')
+              console.log(err)
+            })
           this.notifySuccess('Success', 'Attacked ' + this.enemy + ' in the ' + this.chosenGame + ' game!')
           this.$router.push('/history')
         } else {

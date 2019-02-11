@@ -207,7 +207,26 @@ export default {
         this.notifyFailed('Failed', 'Choose a language!')
       } else {
         if (this.$store.getters.isLoggedIn) {
-          this.notifySuccess('Success', 'Submitted bot for the ' + this.chosenGame + ' game!')
+          let myData = {
+            submitData: {
+              id: '',
+              owner: this.$store.getters.getUsername,
+              game: this.chosenGame,
+              language: this.chosenLanguage,
+              best_rating: 0,
+              best_score: '0'
+            },
+            code: this.content
+          }
+          Axios({
+            url: 'http://localhost:3000/submission/add', data: myData, method: 'POST'
+          })
+            .then((resp) => {
+            })
+            .catch((err) => {
+              this.notifyFailed('Failed', 'Network errors!')
+              console.log(err)
+            })
           this.notifySuccess('Let\'s Fight!', 'But wait a little for your Bot to be compiled!')
           this.$router.push('/fight')
         } else {
