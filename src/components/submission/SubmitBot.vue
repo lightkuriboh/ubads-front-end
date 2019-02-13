@@ -65,7 +65,7 @@ export default {
   },
   data () {
     return {
-      content: '',
+      content: '# Recommend a blank in the first line!',
       games: [
         'Bomber'
       ],
@@ -161,6 +161,7 @@ export default {
         .then((resp) => {
           let str = JSON.stringify(resp.data)
           let histories = JSON.parse(str)
+          histories = histories.reverse()
           for (let i = 0; i < histories.length; i++) {
             this.submitHistory.push({
               id: histories[i].id,
@@ -246,7 +247,8 @@ export default {
       return '/code/' + row.id
     },
     showCode: function (row) {
-      window.open(this.getCodeLink(row))
+      let routeData = this.$router.resolve({path: '/code', name: 'CodeViewer', params: {id: row.id}})
+      window.open(routeData.href, '_blank')
     }
   }
 }

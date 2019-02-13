@@ -6,6 +6,7 @@ import Register from '@/components/authorization/Register'
 import History from '@/components/history/History'
 import SubmitBot from '@/components/submission/SubmitBot'
 import Fight from '@/components/submission/Fight'
+import CodeViewer from '@/components/support/CodeViewer'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ let router = new Router({
       path: '/fight',
       name: 'Fight',
       component: Fight
+    },
+    {
+      path: '/code/:id',
+      name: 'CodeViewer',
+      component: CodeViewer
     }
   ]
 })
