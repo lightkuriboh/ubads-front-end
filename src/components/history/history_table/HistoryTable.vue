@@ -7,11 +7,6 @@
       border
     >
       <el-table-column
-        prop="id"
-        label="FightID"
-      >
-      </el-table-column>
-      <el-table-column
         prop="game"
         label="Game"
       >

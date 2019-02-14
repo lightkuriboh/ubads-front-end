@@ -23,13 +23,16 @@
         Submit
       </b></el-button>
       <el-card style="margin-top: 20px">
+        <div slot="header">
+          Old submissions
+        </div>
         <el-table
           :data="submitHistory"
           height="300"
           border
         >
           <el-table-column
-            label="ID"
+            label="Details"
           >
             <template slot-scope="scope">
               <el-button plain size="small" @click="showCode(scope.row)">
@@ -65,7 +68,7 @@ export default {
   },
   data () {
     return {
-      content: '# Recommend a blank in the first line!',
+      content: '',
       games: [
         'Bomber'
       ],
@@ -154,27 +157,6 @@ export default {
         console.log(err)
       })
     this.submitHistory = []
-    if (this.$store.getters.isLoggedIn) {
-      Axios({
-        url: 'http://localhost:3000/submission/mine', data: {username: this.$store.getters.getUsername}, method: 'POST'
-      })
-        .then((resp) => {
-          let str = JSON.stringify(resp.data)
-          let histories = JSON.parse(str)
-          histories = histories.reverse()
-          for (let i = 0; i < histories.length; i++) {
-            this.submitHistory.push({
-              id: histories[i].id,
-              bestRating: histories[i].best_rating,
-              bestScore: histories[i].best_score
-            })
-          }
-        })
-        .catch((err) => {
-          this.notifyFailed('Failed', 'Network errors!')
-          console.log(err)
-        })
-    }
   },
   methods: {
     editorInit: function () {
@@ -238,6 +220,30 @@ export default {
       }
     },
     gameChoose: function () {
+      if (this.$store.getters.isLoggedIn) {
+        let queryData = {
+          game: this.chosenGame, username: this.$store.getters.getUsername
+        }
+        Axios({
+          url: 'http://localhost:3000/submission/mine', data: queryData, method: 'POST'
+        })
+          .then((resp) => {
+            let str = JSON.stringify(resp.data)
+            let histories = JSON.parse(str)
+            histories = histories.reverse()
+            for (let i = 0; i < histories.length; i++) {
+              this.submitHistory.push({
+                id: histories[i].id,
+                bestRating: histories[i].best_rating,
+                bestScore: histories[i].best_score
+              })
+            }
+          })
+          .catch((err) => {
+            this.notifyFailed('Failed', 'Network errors!')
+            console.log(err)
+          })
+      }
       this.notifySuccess('Game chosen successfully!', 'Game chosen: ' + this.chosenGame)
     },
     langChoose: function () {
@@ -257,7 +263,7 @@ export default {
 <style scoped>
 .main-div {
   width: 90%;
-  max-height: 500px;
+  max-height: 600px;
   margin: 0 auto;
 }
 .left-div {
