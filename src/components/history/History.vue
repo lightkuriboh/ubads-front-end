@@ -16,9 +16,9 @@
         >
           <el-option
             v-for="game in games"
-            :key="game"
-            :label="game"
-            :value="game"
+            :key="game.id"
+            :label="game.name"
+            :value="game.id"
           ></el-option>
         </el-select>
       </div>
@@ -57,7 +57,7 @@ export default {
         let gameList = JSON.parse(str)
         for (let i = 0; i < gameList.length; i++) {
           let value = gameList[i]
-          this.games.push(value.name)
+          this.games.push(value)
         }
         this.games.splice(0, 0, '')
       })

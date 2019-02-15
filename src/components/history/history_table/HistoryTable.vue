@@ -7,7 +7,7 @@
       border
     >
       <el-table-column
-        prop="game"
+        prop="game.name"
         label="Game"
       >
       </el-table-column>
@@ -73,49 +73,19 @@ export default {
           defender: 'Hekl0',
           result: 200,
           time: '21/01/1999'
-        },
-        {
-          id: '1',
-          game: 'Bomber',
-          attacker: 'Hekl0',
-          defender: 'Computer',
-          result: '8/10',
-          time: '04/01/1999'
-        },
-        {
-          id: '2',
-          game: 'Bomber',
-          attacker: 'ILoveBaoNgoc',
-          defender: 'Kuribog',
-          result: -200,
-          time: '06/09/1999'
-        },
-        {
-          id: '3',
-          game: 'Bomber',
-          attacker: 'lightkuriboh',
-          defender: 'ILoveBaoNgoc',
-          result: '!Bot error!',
-          time: '06/09/1999'
-        },
-        {
-          id: '4',
-          game: 'Racing',
-          attacker: 'lightkuriboh',
-          defender: 'ILoveBaoNgoc',
-          result: 312,
-          time: '06/09/1999'
         }
       ]
     }
   },
   created () {
     this.historyData = []
+    let myGameIDSet = new Set()
     Axios({url: 'http://localhost:3000/record', data: {}, method: 'GET'})
       .then((resp) => {
         let strData = JSON.stringify(resp.data)
         let tableData = JSON.parse(strData)
         for (let i = 0; i < tableData.length; i++) {
+          myGameIDSet.add(tableData[i].game)
           this.historyData.push(tableData[i])
           let miliSecond = parseInt(tableData[i].id.toString())
           let myDate = new Date()
@@ -134,6 +104,25 @@ export default {
         }
         this.numberOfRows = this.historyData.length
         this.historyData = this.historyData.reverse()
+        let myGameNameMap = {}
+        myGameIDSet = Array.from(myGameIDSet)
+        for (let i = 0; i < myGameIDSet.length; i++) {
+          let gameID = myGameIDSet[i]
+          Axios({url: 'http://localhost:3000/game/id', data: {id: gameID}, method: 'POST'})
+            .then(
+              (resp) => {
+                myGameNameMap[gameID] = resp.data[0]
+                if (i === myGameIDSet.length - 1) {
+                  this.mapTheGameName(myGameNameMap)
+                }
+              }
+            )
+            .catch(
+              (err) => {
+                console.log(err)
+              }
+            )
+        }
       })
       .catch((err) => {
         this.notifyFailed('Error', 'Network error!')
@@ -150,10 +139,10 @@ export default {
           return item.attacker === myName || item.defender === myName
         })
       }
-      if (this.filter.game.length > 0) {
+      if (this.filter.game && this.filter.game.length > 0) {
         finalData = finalData.filter(function (item) {
           let myGame = that.filter.game
-          return item.game === myGame
+          return item.game.id === myGame
         })
       }
       let startIndex = this.rowsEachPage * (this.currentPage - 1)
@@ -162,6 +151,11 @@ export default {
     }
   },
   methods: {
+    mapTheGameName: function (map) {
+      for (let i = 0; i < this.historyData.length; i++) {
+        this.historyData[i].game = map[this.historyData[i].game]
+      }
+    },
     isNumber: function (n) {
       return /^-?[\d.]+(?:e-?\d+)?$/.test(n)
     },
@@ -180,7 +174,6 @@ export default {
     },
     pageChange: function (pageNumger) {
       this.currentPage = pageNumger
-      // console.log(this.$store.getters.getUsername)
     },
     tableRowClassName: function ({row}) {
       if (!(this.isNumber(row.result))) {

@@ -25,16 +25,19 @@ export default {
   created () {
     this.id = this.$route.params.id
     Axios({
-      url: 'http://localhost:3000/code', data: {id: this.id}, method: 'POST'
+      url: 'http://localhost:3000/code', data: {id: this.id, owner: this.$store.getters.getUsername}, method: 'POST'
     })
       .then((resp) => {
-        console.log(JSON.stringify(resp.data))
-        this.content = resp.data
-        this.content = '\n' + this.content
-        this.notifySuccess('Success', 'This code belongs to you!')
+        if (resp.data && resp.data.length > 0) {
+          this.content = resp.data
+          this.content = '\n' + this.content
+          this.notifySuccess('Success', 'This code belongs to you!')
+        } else {
+          this.notifyFailed('Failed', 'This code doesn\'t belong to you!')
+        }
       })
       .catch((err) => {
-        this.notifyFailed('Failed', 'This code doesn\'t belong to you!')
+        this.notifyFailed('Failed', 'Network error!')
         console.log(err)
       })
   },

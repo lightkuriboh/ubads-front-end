@@ -6,9 +6,10 @@
     <div class="right-div">
       <el-select v-model="chosenGame" placeholder="Choose Game" @change="gameChoose" style="margin: 10px">
         <el-option
-          v-for="gameName in games"
-          :key="gameName"
-          :value="gameName"
+          v-for="game in games"
+          :key="game.id"
+          :value="game.id"
+          :label="game.name"
         ></el-option>
       </el-select>
       <el-select v-model="chosenLanguage" placeholder="Choose A Language" @change="langChoose" style="margin: 10px">
@@ -70,7 +71,10 @@ export default {
     return {
       content: '',
       games: [
-        'Bomber'
+        {
+          id: '1',
+          name: '1'
+        }
       ],
       languages: [
         {
@@ -85,31 +89,6 @@ export default {
           id: '0',
           bestRating: '3400',
           bestScore: '10/10'
-        },
-        {
-          id: '1',
-          bestRating: '2200',
-          bestScore: '10/10'
-        },
-        {
-          id: '2',
-          bestRating: '1200',
-          bestScore: '8/10'
-        },
-        {
-          id: '3',
-          bestRating: '200',
-          bestScore: '2/10'
-        },
-        {
-          id: '4',
-          bestRating: '800',
-          bestScore: '5/10'
-        },
-        {
-          id: '5',
-          bestRating: '20',
-          bestScore: '0/10'
         }
       ]
     }
@@ -126,7 +105,7 @@ export default {
         let gameList = JSON.parse(str)
         for (let i = 0; i < gameList.length; i++) {
           let value = gameList[i]
-          this.games.push(value.name)
+          this.games.push(value)
         }
       })
       .catch((err) => {
@@ -244,13 +223,10 @@ export default {
             console.log(err)
           })
       }
-      this.notifySuccess('Game chosen successfully!', 'Game chosen: ' + this.chosenGame)
+      this.notifySuccess('Game chosen successfully!', 'Game\'s ID chosen: ' + this.chosenGame)
     },
     langChoose: function () {
       this.notifySuccess('Language chosen successfully!', 'Language chosen: ' + this.chosenLanguage)
-    },
-    getCodeLink: function (row) {
-      return '/code/' + row.id
     },
     showCode: function (row) {
       let routeData = this.$router.resolve({path: '/code', name: 'CodeViewer', params: {id: row.id}})

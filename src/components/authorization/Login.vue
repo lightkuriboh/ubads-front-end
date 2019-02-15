@@ -13,9 +13,11 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input placeholder="Password" v-model="loginForm.password">
-            <template slot="prepend"><b>Password
+          <el-input placeholder="Password" v-model="loginForm.password" :type="this.showPass">
+            <template slot="prepend"><b>
+              Password
             </b></template>
+            <el-button slot="append" icon="el-icon-view" @click="toggleShowPass"></el-button>
           </el-input>
         </el-form-item>
         <el-form-item>
@@ -36,6 +38,7 @@ export default {
   name: 'Login',
   data () {
     return {
+      showPass: 'password',
       loginForm: {
         username: '',
         password: ''
@@ -72,14 +75,19 @@ export default {
         message: message
       })
     },
+    toggleShowPass: function () {
+      if (this.showPass.length > 0) {
+        this.showPass = ''
+      } else {
+        this.showPass = 'password'
+      }
+    },
     login: function (formName) {
       let passReference = false
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // alert('submit!')
           passReference = true
         } else {
-          // console.log('error submit!!')
           return false
         }
       })
@@ -91,6 +99,7 @@ export default {
         this.$store.dispatch('login', myData)
           .then(
             (result) => {
+              console.log(result)
               this.notifySuccess('Success', this.$store.getters.authStatus)
               this.$router.push('/')
             }

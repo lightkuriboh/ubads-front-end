@@ -10,9 +10,10 @@
         @change="gameChoose"
       >
         <el-option
-          v-for="gameName in games"
-          :key="gameName"
-          :value="gameName"
+          v-for="game in games"
+          :key="game.id"
+          :value="game.id"
+          :label="game.name"
         ></el-option>
       </el-select>
       <el-button type="danger" plain @click="letsFight"><b>
@@ -77,24 +78,6 @@ export default {
           class: 'CAC',
           identity: '17020035',
           rating: '312'
-        },
-        {
-          username: 'lightkuriboh',
-          name: '',
-          school: 'UET',
-          generation: 'K62',
-          class: 'CAC',
-          identity: '17020025',
-          rating: '3145'
-        },
-        {
-          username: 'hekl0',
-          name: '',
-          school: 'Harvard',
-          generation: 'K55',
-          class: 'WorstClass',
-          identity: '17020041',
-          rating: '2300'
         }
       ]
     }
@@ -110,7 +93,7 @@ export default {
         gameList = JSON.parse(str)
         for (let i = 0; i < gameList.length; i++) {
           let value = gameList[i]
-          this.games.push(value.name)
+          this.games.push(value)
         }
       })
       .catch((err) => {
@@ -133,7 +116,7 @@ export default {
       })
     },
     gameChoose: function () {
-      this.notifySuccess('Game chosen successfully!', 'Game chosen: ' + this.chosenGame)
+      this.notifySuccess('Game chosen successfully!', 'Game chosen\'s ID: ' + this.chosenGame)
       this.opponents = []
       Axios({
         url: 'http://localhost:3000/achievement/game', data: {game: this.chosenGame}, method: 'POST'
@@ -185,7 +168,7 @@ export default {
               this.notifyFailed('Failed', 'Network errors!')
               console.log(err)
             })
-          this.notifySuccess('Success', 'Attacked ' + this.enemy + ' in the ' + this.chosenGame + ' game!')
+          this.notifySuccess('Success', 'Attacked ' + this.enemy + ' in the ' + this.chosenGame + '\'th game!')
           this.$router.push('/history')
         } else {
           this.notifyFailed('Failed', 'You haven\'t logged in!')
