@@ -159,6 +159,13 @@ export default {
         message: message
       })
     },
+    notifyWarning: function (title, message) {
+      this.$notify({
+        title: title,
+        message: message,
+        type: 'warning'
+      })
+    },
     submit: function () {
       if (this.chosenGame.length === 0) {
         this.notifyFailed('Failed', 'Choose a game first!')
@@ -185,6 +192,8 @@ export default {
             url: 'http://localhost:3000/submission/add', data: myData, method: 'POST'
           })
             .then((resp) => {
+              let submitMessage = resp.data
+              this.notifyWarning('Warning', submitMessage)
             })
             .catch((err) => {
               this.notifyFailed('Failed', 'Network errors!')
