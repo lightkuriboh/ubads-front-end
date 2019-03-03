@@ -1,4 +1,5 @@
 <template>
+  <div>
     <el-card style="width: 60%; margin: 0 auto">
       <div slot="header">
         Code's ID: {{this.id}}
@@ -9,6 +10,18 @@
         </pre>
       </div>
     </el-card>
+    <el-card style="width: 60%; margin: 0 auto">
+      <div slot="header">
+        Compilation details
+      </div>
+      <div style="text-align: left; margin: 10px">
+        Language: {{this.info.language}}
+      </div>
+      <div style="text-align: left; margin: 10px">
+        Details: {{this.info.result}}
+      </div>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -19,18 +32,24 @@ export default {
   data () {
     return {
       id: '',
-      content: ''
+      content: '',
+      info: {
+        language: '',
+        result: ''
+      }
     }
   },
   created () {
     this.id = this.$route.params.id
     Axios({
-      url: 'http://localhost:3000/code', data: {id: this.id, owner: this.$store.getters.getUsername}, method: 'POST'
+      url: 'http://localhost:3000/code', data: {id: this.id}, method: 'POST'
     })
       .then((resp) => {
-        if (resp.data && resp.data.length > 0) {
-          this.content = resp.data
+        if (resp.data) {
+          let response = JSON.parse(JSON.stringify(resp.data))
+          this.content = response.code
           this.content = '\n' + this.content
+          this.info = response.compilation_info
           this.notifySuccess('Success', 'This code belongs to you!')
         } else {
           this.notifyFailed('Failed', 'This code doesn\'t belong to you!')

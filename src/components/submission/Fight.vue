@@ -137,8 +137,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.notifyFailed('Failed', 'Network errors!')
-          console.log(err)
+          this.notifyFailed('Failed', err.response.data.message)
         })
     },
     enemyChoose: function (row) {
