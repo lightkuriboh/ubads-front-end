@@ -209,6 +209,7 @@ export default {
     },
     gameChoose: function () {
       if (this.$store.getters.isLoggedIn) {
+        this.notifySuccess('Game chosen successfully!', 'Game\'s ID chosen: ' + this.chosenGame)
         let queryData = {
           game: this.chosenGame, username: this.$store.getters.getUsername
         }
@@ -231,8 +232,9 @@ export default {
             this.notifyFailed('Failed', 'Network errors!')
             console.log(err)
           })
+      } else {
+        this.notifyFailed('Failed', 'Please Login!')
       }
-      this.notifySuccess('Game chosen successfully!', 'Game\'s ID chosen: ' + this.chosenGame)
     },
     langChoose: function () {
       this.notifySuccess('Language chosen successfully!', 'Language chosen: ' + this.chosenLanguage)

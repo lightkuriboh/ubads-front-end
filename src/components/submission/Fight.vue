@@ -116,29 +116,33 @@ export default {
       })
     },
     gameChoose: function () {
-      this.notifySuccess('Game chosen successfully!', 'Game chosen\'s ID: ' + this.chosenGame)
-      this.opponents = []
-      Axios({
-        url: 'http://localhost:3000/achievement/game', data: {game: this.chosenGame}, method: 'POST'
-      })
-        .then((resp) => {
-          let str = JSON.stringify(resp.data)
-          let myOpponents = JSON.parse(str)
-          for (let i = 0; i < myOpponents.length; i++) {
-            this.opponents.push({
-              username: myOpponents[i].userDetails.username,
-              name: myOpponents[i].userDetails.metadata.name,
-              school: myOpponents[i].userDetails.metadata.education.school,
-              generation: myOpponents[i].userDetails.metadata.education.generation,
-              class: myOpponents[i].userDetails.metadata.education.class,
-              identity: myOpponents[i].userDetails.metadata.education.identity,
-              rating: myOpponents[i].resultDetails.rating
-            })
-          }
+      if (this.$store.getters.isLoggedIn) {
+        this.notifySuccess('Game chosen successfully!', 'Game chosen\'s ID: ' + this.chosenGame)
+        this.opponents = []
+        Axios({
+          url: 'http://localhost:3000/achievement/game', data: {game: this.chosenGame}, method: 'POST'
         })
-        .catch((err) => {
-          this.notifyFailed('Failed', err.response.data.message)
-        })
+          .then((resp) => {
+            let str = JSON.stringify(resp.data)
+            let myOpponents = JSON.parse(str)
+            for (let i = 0; i < myOpponents.length; i++) {
+              this.opponents.push({
+                username: myOpponents[i].userDetails.username,
+                name: myOpponents[i].userDetails.metadata.name,
+                school: myOpponents[i].userDetails.metadata.education.school,
+                generation: myOpponents[i].userDetails.metadata.education.generation,
+                class: myOpponents[i].userDetails.metadata.education.class,
+                identity: myOpponents[i].userDetails.metadata.education.identity,
+                rating: myOpponents[i].resultDetails.rating
+              })
+            }
+          })
+          .catch((err) => {
+            this.notifyFailed('Failed', err.response.data.message)
+          })
+      } else {
+        this.notifyFailed('Failed', 'Please Login!')
+      }
     },
     enemyChoose: function (row) {
       this.enemy = row.username
