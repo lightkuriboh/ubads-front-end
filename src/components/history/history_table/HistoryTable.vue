@@ -36,8 +36,12 @@
         label="Details"
       >
         <template slot-scope="scope">
-          <el-button @click="clickLog(scope.row)" size="small">Log</el-button>
-          <el-button @click="clickView(scope.row)" size="small">View</el-button>
+          <el-button @click="clickLog(scope.row)" size="small">
+            Log
+          </el-button>
+          <el-button @click="clickView(scope.row)" size="small">
+            View
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -189,17 +193,13 @@ export default {
         }
       }
     },
-    getLogLink: function (row) {
-      return '/log/' + row.id
-    },
-    getViewLink: function (row) {
-      return '/view/' + row.id
-    },
     clickLog: function (row) {
-      window.open(this.getLogLink(row))
+      let routeData = this.$router.resolve({path: '/log', name: 'GameLogger', params: {id: row.id}})
+      window.open(routeData.href, '_blank')
     },
     clickView: function (row) {
-      window.open(this.getViewLink(row))
+      let routeData = this.$router.resolve({path: '/view', name: 'GameRender', params: {id: row.id}})
+      window.open(routeData.href, '_blank')
     }
   }
 }

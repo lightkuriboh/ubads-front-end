@@ -6,7 +6,9 @@ import Register from '@/components/authorization/Register'
 import History from '@/components/history/History'
 import SubmitBot from '@/components/submission/SubmitBot'
 import Fight from '@/components/submission/Fight'
-import CodeViewer from '@/components/support/CodeViewer'
+import CodeViewer from '@/components/support/code_viewer/CodeViewer'
+import GameRender from '@/components/support/game_render/GameRender'
+import GameLogger from '@/components/support/game_logger/GameLogger'
 
 Vue.use(Router)
 
@@ -46,6 +48,16 @@ let router = new Router({
       path: '/code/:id',
       name: 'CodeViewer',
       component: CodeViewer
+    },
+    {
+      path: '/view/:id',
+      name: 'GameRender',
+      component: GameRender
+    },
+    {
+      path: '/log/:id',
+      name: 'GameLogger',
+      component: GameLogger
     }
   ]
 })
