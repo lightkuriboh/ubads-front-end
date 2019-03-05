@@ -48,7 +48,15 @@ export default {
     }
   },
   created () {
+    /**
+     * Get Game List from server
+     * @type {Array}
+     */
     this.games = []
+    /**
+     * This API return the list of game's information
+     * The information contains {id, name, active=true, max_score}
+     */
     Axios({
       url: 'http://localhost:3000/game', data: {}, method: 'GET'
     })
@@ -59,6 +67,9 @@ export default {
           let value = gameList[i]
           this.games.push(value)
         }
+        /**
+         * Add an empty selection for not filtering anything
+         */
         this.games.splice(0, 0, '')
       })
       .catch((err) => {

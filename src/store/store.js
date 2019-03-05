@@ -42,6 +42,10 @@ export const store = new Vuex.Store({
             const user = resp.data.user
             localStorage.setItem('token', token)
             localStorage.setItem('user', JSON.stringify(user))
+            /**
+             * Set headers.authorization as a token, so that each request will carry this information as default
+             * @type {string | string | * | CancelToken}
+             */
             Axios.defaults.headers.common['Authorization'] = token
             commit('auth_success', {user, token})
             resolve(resp)

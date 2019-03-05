@@ -103,14 +103,17 @@
 export default {
   name: 'Register',
   data () {
+    /**
+     * Validator to check if two password are the same
+     */
     let checkPassword = (rule, value, callback) => {
-      if (value === '') {
+      if (value === '') { // Empty
         callback(new Error('Enter the password again!'))
       } else {
-        if (this.registerForm.confirm.password !== this.registerForm.password) {
+        if (this.registerForm.confirm.password !== this.registerForm.password) { // Different from each other
           callback(new Error('Two passwords must be same!'))
         } else {
-          callback()
+          callback() // OK
         }
       }
     }
@@ -188,6 +191,10 @@ export default {
     }
   },
   created () {
+    /**
+     * If enter this page while logged in,
+     * redirect to home page
+     */
     if (this.$store.getters.isLoggedIn) {
       this.$router.push('/')
       this.notifySuccess('Success', 'You logged in already!')
@@ -209,12 +216,15 @@ export default {
     },
     register: function (formName) {
       let passReference = false
+      /**
+       * Validate if all requirements has fulfilled
+       */
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          // alert('submit!')
           passReference = true
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
@@ -234,7 +244,10 @@ export default {
             }
           }
         }
-        alert(myData)
+        /**
+         * Call register action in store.js as this.$store.
+         * If failed, tell user to do again
+         */
         this.$store.dispatch('register', myData)
           .then(
             () => {

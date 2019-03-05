@@ -28,6 +28,7 @@ export default {
     logout: function () {
       this.$store.dispatch('logout')
         .then(() => {
+          this.notifySuccess('Success', 'See you again!')
           this.$router.push('/login')
         })
     }

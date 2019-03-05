@@ -84,6 +84,10 @@ export default {
   },
   created () {
     this.opponents = []
+    /**
+     * Request APT for game's information
+     * @type {Array}
+     */
     let gameList = []
     Axios({
       url: 'http://localhost:3000/game', data: {}, method: 'GET'
@@ -115,10 +119,34 @@ export default {
         message: message
       })
     },
+    /**
+     * When game chosen, get the user list who has submitted bot for this game,
+     * then the user can choose one and fight this person
+     */
     gameChoose: function () {
       if (this.$store.getters.isLoggedIn) {
         this.notifySuccess('Game chosen successfully!', 'Game chosen\'s ID: ' + this.chosenGame)
         this.opponents = []
+        /**
+         * This API return an Array of information {
+         *     userDetails: {
+         *         username,
+         *         metadata: {
+         *             name,
+         *             education: {
+         *                 school,
+         *                 generation,
+         *                 class,
+         *                 identity
+         *             }
+         *         }
+         *     },
+         *     userResult: {
+         *         rating,
+         *         score
+         *     }
+         * }
+         */
         Axios({
           url: 'http://localhost:3000/achievement/game', data: {game: this.chosenGame}, method: 'POST'
         })

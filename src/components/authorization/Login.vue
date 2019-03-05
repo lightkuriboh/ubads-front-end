@@ -56,6 +56,10 @@ export default {
     }
   },
   created () {
+    /**
+     * If enter this page while logged in,
+     * redirect to home page
+     */
     if (this.$store.getters.isLoggedIn) {
       this.$router.push('/')
       this.notifySuccess('Success', 'You logged in already!')
@@ -75,6 +79,11 @@ export default {
         message: message
       })
     },
+    /**
+     * After using this function,
+     * the password will show or hide
+     * depend on its current state
+     */
     toggleShowPass: function () {
       if (this.showPass.length > 0) {
         this.showPass = ''
@@ -92,14 +101,22 @@ export default {
         }
       })
       if (passReference) {
+        /**
+         * Create data form to login
+         * @type {{username: string, password: string}}
+         */
         let myData = {
           username: this.loginForm.username,
           password: this.loginForm.password
         }
+        /**
+         * Call login action in store.js as this.$store.
+         * If failed, tell user to do again
+         */
         this.$store.dispatch('login', myData)
           .then(
             (result) => {
-              console.log(result)
+              // console.log(result)
               this.notifySuccess('Success', this.$store.getters.authStatus)
               this.$router.push('/')
             }
