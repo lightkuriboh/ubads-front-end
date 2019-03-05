@@ -23,6 +23,7 @@ export default {
     }
   },
   created () {
+    require('../../../../node_modules/game_render/assets/scene/start.jpg')
     let config = {
       type: Phaser.AUTO,
       width: constant.MAP_WIDTH * constant.SCALE,
