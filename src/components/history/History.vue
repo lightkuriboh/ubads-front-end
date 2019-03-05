@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button @click="seegame">Clickme</button>
     <el-card class="history-card">
       <div slot="header"><b>History</b></div>
       <div style="margin-bottom: 20px">
@@ -34,6 +35,12 @@ export default {
   name: 'History',
   components: {
     HistoryTable
+  },
+  methods: {
+    seegame: function () {
+      let routeData = this.$router.resolve({path: '/view', name: 'GameRender', params: {id: '1'}})
+      window.open(routeData.href, '_blank')
+    }
   },
   data () {
     return {
