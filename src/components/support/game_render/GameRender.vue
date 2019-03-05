@@ -19,29 +19,31 @@ export default {
   name: 'GameRender',
   data () {
     return {
+      game: {}
     }
   },
   created () {
+    let config = {
+      type: Phaser.AUTO,
+      width: constant.MAP_WIDTH * constant.SCALE,
+      height: constant.MAP_HEIGHT * constant.SCALE,
+      parent: 'container',
+      scene: [LoadingScene, StartScene, GameScene]
+      // scene: {
+      //   init: LoadingScene,
+      //   preload: StartScene,
+      //   create: GameScene
+      // }
+    }
+    this.game = new Phaser.Game(config)
   },
   methods: {
     test: function () {
       console.log(dataGame)
-      let config = {
-        type: Phaser.AUTO,
-        width: constant.MAP_WIDTH * constant.SCALE,
-        height: constant.MAP_HEIGHT * constant.SCALE,
-        parent: 'container',
-        scene: [LoadingScene, StartScene, GameScene]
-        // scene: {
-        //   init: LoadingScene,
-        //   preload: StartScene,
-        //   create: GameScene
-        // }
-      }
-      let game = new Phaser.Game(config)
-      game.scene.stop('StartScene')
-      game.scene.stop('GameScene')
-      game.scene.run('StartScene', dataGame)
+
+      this.game.scene.stop('StartScene')
+      this.game.scene.stop('GameScene')
+      this.game.scene.run('StartScene', dataGame)
     }
   }
 }
