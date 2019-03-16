@@ -130,7 +130,7 @@ export default {
           Axios({url: 'http://localhost:3000/game/id', data: {id: gameID}, method: 'POST'})
             .then(
               (resp) => {
-                myGameNameMap[gameID] = resp.data[0]
+                myGameNameMap[gameID] = resp.data
                 if (i === myGameIDSet.length - 1) { // Map all gameID already
                   this.mapTheGameName(myGameNameMap)
                 }

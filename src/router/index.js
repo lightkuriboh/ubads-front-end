@@ -8,7 +8,7 @@ import SubmitBot from '@/components/submission/SubmitBot'
 import Fight from '@/components/submission/Fight'
 import CodeViewer from '@/components/support/code_viewer/CodeViewer'
 import GameRender from '@/components/support/game_render/GameRender'
-import GameLogger from '@/components/support/game_logger/GameLogger'
+import GameLogger from '@/components/support/log_viewer/LogViewer'
 
 Vue.use(Router)
 
