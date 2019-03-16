@@ -194,6 +194,8 @@ export default {
             url: 'http://localhost:3000/record/add', data: myData, method: 'POST'
           })
             .then((resp) => {
+              console.log(resp.data)
+              this.notifySuccess('Success', 'Fight complete!\nReload page to view change!')
             })
             .catch((err) => {
               this.notifyFailed('Failed', 'Network errors!')
